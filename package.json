@@ -1,23 +1,38 @@
 {
   "name": "lane-proj-two",
   "version": "1.0.0",
-  "description": "koa geo­location and weather services middleware",
+  "description": "koa geo­location and weather service middleware",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel-core/register test.js",
+    "test:watch": "npm test -- --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/theslyone/lane-proj-two.git"
+    "url": "git+https://github.com/theslyone/koa-weather.git"
   },
   "keywords": [
     "koa",
-    "nodejs"
+    "nodejs",
+    "middleware"
   ],
   "author": "Okonkwo Sylvester",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/theslyone/lane-proj-two/issues"
+    "url": "https://github.com/theslyone/koa-weather/issues"
   },
-  "homepage": "https://github.com/theslyone/lane-proj-two#readme"
+  "homepage": "https://github.com/theslyone/koa-weather#readme",
+  "dependencies": {
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.22.0",
+    "chai": "^3.5.0",
+    "koa": "^2.0.0-alpha.8",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
+  }
 }
