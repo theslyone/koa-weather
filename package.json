@@ -4,7 +4,7 @@
   "description": "koa geo­location and weather service middleware",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --require babel-polyfill test.js --harmony --timeout 8000",
+    "test": "mocha --compilers js:babel-core/register --require babel-polyfill test.js --harmony --timeout 8500",
     "test:watch": "npm test -- --watch"
   },
   "repository": {
