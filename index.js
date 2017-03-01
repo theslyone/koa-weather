@@ -25,7 +25,7 @@ const weatherMiddleware = (options) => {
     await rp(`http://ip-api.com/json/`)
     .then(parseResponse)
     .then((json) => {
-      ctx.request.geoLocation = {...json};
+      ctx.request.geoLocation = json;
       return ctx.request.geoLocation
     })
     .then(async (geoLocation) => {
