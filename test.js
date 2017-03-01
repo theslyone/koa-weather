@@ -9,43 +9,33 @@
 
 'use strict'
 
-import mocha from 'mocha'
 import chai, { expect } from 'chai'
 import Koa from 'koa'
 import request from 'supertest'
-var weatherMiddleware from './index'
+import weatherMiddleware from './index'
 
-var app = new Koa()
+let app = new Koa()
+app.use(weatherMiddleware());
+app.use(ctx =>
+  {
+    expect(ctx.request.geoLocation).to.be.an('object');
+    expect(ctx.request.geoLocation).to.have.property('lat');
+    expect(ctx.request.geoLocation).to.have.property('lon');
 
-test('koa-weather', function () {
-  test('should return weather data', function (done) {
-    app.use(weatherMiddleware())
-
-    request(app.callback())
-      .get('/')
-      .expect(200, 'Hello World')
-      .end(done)
+    expect(ctx.request.weatherData).to.be.an('object');
+    expect(ctx.request.weatherData).to.have.property('temp');
+    expect(ctx.request.weatherData).to.have.property('weatherCode');
+    ctx.body = 'Hello World';
   })
-  test('should yield next middleware', function (done) {
-    var ok = false
+let server = app.listen();
+let agent = request.agent(server)
 
-    app
-      .use(function * (next) {
-        this.helloworld = true
-        yield * next
-      })
-      .use(weatherMiddleware())
-      .use(function * (next) {
-        expect(this.helloworld).to.be.true
-        ok = true
-      })
-
-    request(app.callback())
-      .get('/')
+describe('koa-weather', function () {
+  it('should return geo-location, weather data and call next middleware', function (done) {
+    agent.get('/')
       .expect(200, 'Hello World')
-      .end(function (err) {
-        test.ifError(err)
-        test.equal(ok, true)
+      .end((err) => {
+        expect(err).to.not.be.an('error');
         done()
       })
   })

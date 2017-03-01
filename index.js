@@ -9,44 +9,45 @@
 
 import rp from 'request-promise'
 
-const weatherMiddle = (options) {
-  let options = options || ':method ":url"';
-
-  return async function weather (ctx, next) {
-    let ipAddress = ${ctx.request.ip};
-
-    ctx.log.info(`request from ${ctx.request.ip} to ${ctx.path}`);
-    rp(`http://ip-api.com/json/${ctx.request.ip}`)
-    .then((resp) => {
-      this.lat = resp.lat;
-      this.lon = resp.lon;
-      this.country = resp.country;
-      this.countryCode = resp.countryCode;
-      this.city = resp.city;
-      return resp;
-    })
-    .then((resp) => {
-      rp(`api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.lon}&APPID=922b22f92a07fc03c7a6c35d1cc6c760`)
-      .then(function (resp) {
-        this.temp = resp.main['temp'];
-        this.humidity = resp.main['humidity'];
-        this.pressure = resp.main['pressure'];
-        this.tempMin = resp.main['temp_min'];
-        this.tempMax = resp.main['temp_max'];
-        this.windSpeed = resp.wind['speed'];
-        this.windDeg = resp.wind['deg'];
-        this.weatherCode = resp.id;
-      })
-    })
-    .catch(function (err) {
-      next(err)
-    });
-    await next();
-  };
-
-  /*return function* weather (next) {
-    yield* next;
-  };*/
+const parseResponse = (resp) => {
+  let json = JSON.parse(resp)
+  //if (json.status !== 'success') {
+  //  throw new Error('Request error')
+  //}
+  return json
 }
 
-export default (options) => weatherMiddle
+const weatherMiddleware = (options) => {
+  options = Object.assign({}, { throwOnError: true }, options || {});
+
+  return async (ctx, next) => {
+    let ipAddress = ctx.request.ip;
+
+    //await rp(`http://ip-api.com/json/${ipAddress}`) //ipAddress resolves to 127.0.0.1, not pasing ip auto resolves to ext ip in API
+    await rp(`http://ip-api.com/json/`)
+    .then(parseResponse)
+    .then((json) => {
+      ctx.request.geoLocation = {...json};
+      return ctx.request.geoLocation
+    })
+    .then(async (geoLocation) => {
+      let {lat, lon} = geoLocation
+      let appId = '922b22f92a07fc03c7a6c35d1cc6c760'
+      await rp(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${appId}`)
+      .then(parseResponse)
+      .then((json) => {
+        ctx.request.weatherData = Object.assign({},
+          { temp: json.main['temp'], humidity: json.main['humidity'],
+            tempMin: json.main['temp_min'], tempMax: json.main['temp-max']},
+          { windSpeed: json.wind['speed'], windDeg: json.wind['deg'] },
+          { weatherCode: json.id });
+      })
+    })
+    .catch((err) => {
+      if (err && options.throwOnError) ctx.throw(err)
+    });
+    await next();
+  }
+}
+
+export default weatherMiddleware
