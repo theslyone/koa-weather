@@ -48,4 +48,4 @@ const weatherMiddleware = (options) => {
   }
 }
 
-export default weatherMiddleware
+module.exports = weatherMiddleware
