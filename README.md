@@ -13,10 +13,13 @@ Then simply `npm install koa-weather --save`
 
 `app.use(weatherMiddleware(options))`
 
-options providers a means to trigger an exception to terminate the pipeline with a 500 code error if weather data API request fails
+options provides a means to trigger an exception to terminate the pipeline with a 500 code error if weather data API request fails
 
 option parameter
 * `throwOnError` default true
+
+## Example Usage
+[koa-weather-test](https://github.com/theslyone/kia-weather-test.git)
 
 ##Third party APIs
 * [Geo location request API](http://ip­api.com)
