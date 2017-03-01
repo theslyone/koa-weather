@@ -1,7 +1,9 @@
 # koa-weather
 ==============
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Build Status](https://travis-ci.org/theslyone/koa-weather.svg?branch=master)](https://travis-ci.org/theslyone/koa-weather)
 
-Koa geo­location and weather service middleware
+Koajs geo­location and weather service middleware
 
 ## Usage
 Simply `npm install koa-weather --save`
@@ -16,5 +18,5 @@ option parameter
 * `throwOnError` default true
 
 ##Third party APIs
-* ![Geo location request API](http://ip­api.com)
-* ![Weather data request API](http://openweathermap.org/api))
+* [Geo location request API](http://ip­api.com)
+* [Weather data request API](http://openweathermap.org/api))
