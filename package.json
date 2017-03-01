@@ -1,5 +1,5 @@
 {
-  "name": "lane-proj-two",
+  "name": "koa-weather",
   "version": "1.0.0",
   "description": "koa geo­location and weather service middleware",
   "main": "index.js",
