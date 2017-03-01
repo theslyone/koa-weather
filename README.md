@@ -5,7 +5,17 @@
 Koajs geo­location and weather service middleware
 
 ## Usage
-Simply `npm install koa-weather --save`
+First we'll install babel-cli.
+
+`npm install --save-dev babel-cli`
+
+Along with some presets.
+
+`npm install --save-dev babel-core babel-preset-es2015 babel-preset-stage-2 babel-plugin-transform-async-to-generator babel-polyfill`
+
+Or follow the steps in [koajs](http://koajs.com) to setup a koa enabled node js application
+
+Then simply `npm install koa-weather --save`
 
 `import weatherMiddleware from 'koa-weather'`
 

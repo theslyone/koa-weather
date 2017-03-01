@@ -5,9 +5,7 @@
  * Released under the MIT license.
  */
 
-'use strict'
-
-import rp from 'request-promise'
+var rp = require('request-promise');
 
 const parseResponse = (resp) => {
   let json = JSON.parse(resp)
